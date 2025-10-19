@@ -8,12 +8,12 @@ local function map_todos_in_file(folder, filename, entries)
 	local full_path = folder .. "/" .. filename
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
-		local col, _ = string.find(string.lower(value), "todo")
-		if col then
+		local pos = string.find(string.lower(value), "todo")
+		if pos then
 			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
-				col = col,
+				col = pos[0],
 				row = row,
 			})
 		end
