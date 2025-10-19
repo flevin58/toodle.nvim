@@ -4,7 +4,7 @@ local function map_data(file, dir, data)
 	local full_path = dir .. "/" .. file
 	local lines = vim.fn.readfile(full_path)
 	for index, value in ipairs(lines) do
-		local find = string.find(value, "table")
+		local find = string.find(string.lower(value), "table")
 		if find then
 			table.insert(data, {
 				path = full_path,
@@ -46,7 +46,7 @@ function M.setup()
 		local buf = vim.api.nvim_create_buf(false, true)
 
 		local lines = {}
-		for index, value in ipairs(files) do
+		for _, value in ipairs(files) do
 			table.insert(lines, value.file_name .. " " .. value.col_idx .. " " .. value.row)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
