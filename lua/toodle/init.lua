@@ -76,7 +76,7 @@ function M.setup()
 			local selected = files[row]
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim.nvim_get_current_buf(current_buf)
-			vim.api.nvim_command("edit " .. selected.path)
+			vim.api.nvim_command("edit " .. selected.file_path)
 			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col })
 		end, { buffer = buf })
 
