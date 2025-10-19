@@ -58,7 +58,7 @@ function M.setup()
 
 		local lines = {}
 		for _, value in ipairs(files) do
-			table.insert(lines, value.file_name .. " " .. value.col_idx .. " " .. value.row)
+			table.insert(lines, value.file_name .. " " .. value.row .. " " .. value.col)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 		local win = vim.api.nvim_open_win(buf, true, {
@@ -72,7 +72,7 @@ function M.setup()
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim.nvim_get_current_buf(current_buf)
 			vim.api.nvim_command("edit " .. selected.path)
-			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col_idx })
+			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col })
 		end, { buffer = buf })
 
 		-- Add bindings so that 'q' closes the toodle window
