@@ -61,7 +61,8 @@ function M.setup()
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, entry in ipairs(files) do
-			local entry_line = string.format("%s (%d:%d)", entry.file_name, entry.row, entry.col)
+			-- local entry_line = string.format("%s (%d:%d)", entry.file_name, entry.row, entry.col)
+			local entry_line = "pippo"
 			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
