@@ -60,10 +60,9 @@ function M.setup()
 
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
-		for _, value in ipairs(files) do
-			-- TODO: format line as (row:col) like the status line!
-			-- table.insert(lines, value.file_name .. " " .. value.row .. " " .. value.col)
-			table.insert(lines, string.format("%s (%d:%d)", value.file_name, value.row, value.col))
+		for _, entry in ipairs(files) do
+			local entry_line = string.format("%s (%d:%d)", entry.file_name, entry.row, entry.col)
+			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 		-- Show the buffer in a split window at the right
