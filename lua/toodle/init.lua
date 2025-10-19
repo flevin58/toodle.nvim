@@ -4,13 +4,14 @@ local M = {}
 -- Reads a file in a given base folder and maps all occurrences
 -- of "todo"s storing the filename together with line and column
 -- --------------------------------------------------------------
-local function map_todos_in_file(folder, filename, list)
+local function map_todos_in_file(folder, filename, entries)
 	local full_path = folder .. "/" .. filename
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
 		local col = string.find(string.lower(value), "todo")
 		if col then
-			table.insert(list, {
+			print(filename, col, row)
+			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
 				col = col,
