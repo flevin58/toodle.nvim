@@ -29,14 +29,17 @@ end
 local function get_files(folder)
 	local return_files = {}
 	for _, file in ipairs(vim.fn.readdir(folder)) do
+		-- Exclude hidden files/folders
 		if vim.startswith(file, ".") then
 			goto continue
 		end
 		local full_path = folder .. "/" .. file
 		if vim.fn.isdirectory(full_path) == 0 then
+			-- Here we found a file, so add the file and todo entries to the table
 			table.insert(return_files, file)
 			map_todos_in_file(folder, file, return_files)
 		else
+			-- Here we have a folder, so recursively add file entries with a todo
 			for _, f in ipairs(get_files(full_path)) do
 				table.insert(return_files, f)
 			end
@@ -54,21 +57,23 @@ function M.setup()
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
 		local buf = vim.api.nvim_create_buf(false, true)
-		-- TODO
 
+		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, value in ipairs(files) do
+			-- TODO: format line as (row:col) like the status line!
 			table.insert(lines, value.file_name .. " " .. value.row .. " " .. value.col)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+		-- Show the buffer in a split window at the right
 		local win = vim.api.nvim_open_win(buf, true, {
 			split = "right",
 		})
 
 		-- Add bindings so that 'gg' opens the file at the TODO location
 		vim.keymap.set("n", "gg", function()
-			local pos = vim.api.nvim_win_get_cursor(0)
-			local selected = files[pos[1]]
+			local row, _ = vim.api.nvim_win_get_cursor(0)
+			local selected = files[row]
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim.nvim_get_current_buf(current_buf)
 			vim.api.nvim_command("edit " .. selected.path)
