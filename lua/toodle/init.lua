@@ -4,7 +4,7 @@ local function map_data(file, dir, data)
 	local full_path = dir .. "/" .. file
 	local lines = vim.fn.readfile(full_path)
 	for index, value in ipairs(lines) do
-		local find = string.find(value, "TODO")
+		local find = string.find(value, "table")
 		if find then
 			table.insert(data, {
 				path = full_path,
