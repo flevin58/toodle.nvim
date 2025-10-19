@@ -34,7 +34,7 @@ local function get_files(folder)
 		end
 		local full_path = folder .. "/" .. file
 		if vim.fn.isdirectory(full_path) == 0 then
-			-- table.insert(return_files, file)
+			table.insert(return_files, file)
 			map_todos_in_file(folder, file, return_files)
 		else
 			for _, f in ipairs(get_files(full_path)) do
