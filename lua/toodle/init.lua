@@ -9,8 +9,7 @@ local function map_todos_in_file(folder, filename, entries)
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
 		local col = string.find(string.lower(value), "todo")
-		if col then
-			print(filename, col, row)
+		if col and filename then
 			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
@@ -61,8 +60,7 @@ function M.setup()
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, entry in ipairs(files) do
-			-- local entry_line = string.format("%s (%d:%d)", entry.file_name, entry.row, entry.col)
-			local entry_line = "pippo"
+			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
 			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
