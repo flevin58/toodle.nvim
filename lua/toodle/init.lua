@@ -9,7 +9,7 @@ local function map_todos_in_file(folder, filename, entries)
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
 		local pos = string.find(string.lower(value), "todo")
-		if pos then
+		if pos ~= nil then
 			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
@@ -35,10 +35,8 @@ local function get_files(folder)
 		local full_path = folder .. "/" .. file
 		if vim.fn.isdirectory(full_path) == 0 then
 			-- Here we found a file, so add the file and todo entries to the table
-			if file then
-				table.insert(return_files, file)
-				map_todos_in_file(folder, file, return_files)
-			end
+			table.insert(return_files, file)
+			map_todos_in_file(folder, file, return_files)
 		else
 			-- Here we have a folder, so recursively add file entries with a todo
 			for _, f in ipairs(get_files(full_path)) do
