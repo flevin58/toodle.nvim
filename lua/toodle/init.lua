@@ -35,8 +35,10 @@ local function get_files(folder)
 		local full_path = folder .. "/" .. file
 		if vim.fn.isdirectory(full_path) == 0 then
 			-- Here we found a file, so add the file and todo entries to the table
-			table.insert(return_files, file)
-			map_todos_in_file(folder, file, return_files)
+			if file then
+				table.insert(return_files, file)
+				map_todos_in_file(folder, file, return_files)
+			end
 		else
 			-- Here we have a folder, so recursively add file entries with a todo
 			for _, f in ipairs(get_files(full_path)) do
