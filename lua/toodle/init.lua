@@ -62,6 +62,7 @@ function M.setup()
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, entry in ipairs(files) do
+			vim.print(entry)
 			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
 			table.insert(lines, entry_line)
 		end
