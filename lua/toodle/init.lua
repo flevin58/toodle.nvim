@@ -13,7 +13,7 @@ local function map_todos_in_file(folder, filename, entries)
 			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
-				col = pos[0],
+				col = pos[1],
 				row = row,
 			})
 		end
