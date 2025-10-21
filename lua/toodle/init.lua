@@ -43,6 +43,7 @@ local function get_files(folder, entries)
 end
 
 function M.setup()
+	-- TODO: Delete the command below
 	-- Create a ToodleDebug command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("ToodleDebugMap", function()
 		local folder = vim.fn.join({ vim.fn.getcwd(), "lua", "toodle" }, "/")
@@ -71,6 +72,7 @@ function M.setup()
 		end)
 	end, {})
 
+	-- TODO: Delete the command below
 	vim.api.nvim_create_user_command("ToodleDebugGetFiles", function()
 		local folder = vim.fn.getcwd()
 		local entries = {}
@@ -100,8 +102,9 @@ function M.setup()
 
 	-- Create a Toodle command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("Toodle", function()
-		local files = {}
-		get_files(vim.fn.getcwd(), files)
+		local folder = vim.fn.getcwd()
+		local entries = {}
+		get_files(folder, entries)
 
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
@@ -109,7 +112,7 @@ function M.setup()
 
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
-		for _, entry in ipairs(files) do
+		for _, entry in ipairs(entries) do
 			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
 			table.insert(lines, entry_line)
 		end
@@ -122,7 +125,7 @@ function M.setup()
 		-- Add bindings so that 'gg' opens the file at the TODO location
 		vim.keymap.set("n", "gg", function()
 			local row, _ = vim.api.nvim_win_get_cursor(0)
-			local selected = files[row]
+			local selected = entries[row]
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim.nvim_get_current_buf(current_buf)
 			vim.api.nvim_command("edit " .. selected.file_path)
