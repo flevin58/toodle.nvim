@@ -66,6 +66,14 @@ function M.setup()
 			split = "right",
 		})
 
+		-- Add bindings so that 'c' shows where the entry is
+		vim.keymap.set("n", "c", function()
+			local pos = vim.api.nvim_win_get_cursor(0)
+			local row = pos[1]
+			table.insert(lines, "Selected" .. row)
+			vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+		end)
+
 		-- Add bindings so that 'q' closes the toodle window
 		vim.keymap.set("n", "q", function()
 			vim.api.nvim_win_close(win, false)
