@@ -52,6 +52,8 @@ function M.setup()
 	-- Create a Toodle command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("Toodle", function()
 		local files = get_files(vim.fn.getcwd())
+		-- fix first entry is null. TODO: Find out why and fix it!
+		table.remove(files, 1)
 
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
