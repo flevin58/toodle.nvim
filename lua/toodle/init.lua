@@ -32,7 +32,7 @@ local function get_files(folder, entries)
 			local full_path = folder .. "/" .. file
 			if vim.fn.isdirectory(full_path) == 0 then
 				-- Here we found a file, so add the file and todo entries to the table
-				table.insert(entries, file)
+				--table.insert(entries, file)
 				map_todos_in_file(folder, file, entries)
 			else
 				-- Here we have a folder, so recursively add file entries with a todo
@@ -46,7 +46,7 @@ function M.setup()
 	-- Create a ToodleDebug command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("ToodleDebug", function()
 		-- local files = {}
-		-- get_files(vim.fn.getcwd(), files)
+		get_files(vim.fn.getcwd(), files)
 		local folder = vim.fn.join({ vim.fn.getcwd(), "lua", "toodle" }, "/")
 		local entries = {}
 		map_todos_in_file(folder, "init.lua", entries)
