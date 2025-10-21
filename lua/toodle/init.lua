@@ -61,7 +61,7 @@ function M.setup()
 		-- Fill the buffer with debug info
 		local lines = {}
 		for _, entry in ipairs(entries) do
-			local entry_line = string.format("%s (%s)", entry.file_name, entry.pos)
+			local entry_line = string.format("%s (%d)", entry.file_name, entry.row)
 			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
