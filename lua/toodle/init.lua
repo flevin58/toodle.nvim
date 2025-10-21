@@ -9,7 +9,6 @@ local function map_todos_in_file(folder, file_name, entries)
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
 		local col = string.find(value, "TODO:", 1, true)
-		-- if col ~= nil then
 		if col then
 			table.insert(entries, {
 				file_path = full_path,
@@ -21,11 +20,10 @@ local function map_todos_in_file(folder, file_name, entries)
 	end
 end
 
--- --------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Reads recursively the given folder and for each file having a
--- "todo" string it adds its name, row and column to a table
--- which is then returned to the calling function
--- --------------------------------------------------------------
+-- "todo" string it adds its name, row and column to the given table
+-- -----------------------------------------------------------------
 local function get_files(folder, entries)
 	for _, file in ipairs(vim.fn.readdir(folder)) do
 		-- Exclude hidden files/folders
@@ -44,71 +42,6 @@ local function get_files(folder, entries)
 end
 
 function M.setup()
-	-- TODO: Delete the command below
-	-- Create a ToodleDebug command that opens a new window and writes the files list into it
-	vim.api.nvim_create_user_command("ToodleDebugMap", function()
-		local folder = vim.fn.join({ vim.fn.getcwd(), "lua", "toodle" }, "/")
-		local entries = {}
-		map_todos_in_file(folder, "init.lua", entries)
-
-		-- Create a temporary buffer that cannot be saved (false)
-		local buf = vim.api.nvim_create_buf(false, true)
-
-		-- Fill the buffer with debug info
-		local lines = {}
-		for _, entry in pairs(entries) do
-			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
-			table.insert(lines, entry_line)
-		end
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-
-		-- Show the buffer in a split window at the right
-		local win = vim.api.nvim_open_win(buf, true, {
-			split = "right",
-		})
-
-		-- Add bindings so that 'c' shows where the entry is
-		vim.keymap.set("n", "<CR>", function()
-			local pos = vim.api.nvim_win_get_cursor(0)
-			local row = pos[1]
-			table.insert(lines, "Selected" .. row)
-			vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-		end)
-
-		-- Add bindings so that 'q' closes the toodle window
-		vim.keymap.set("n", "q", function()
-			vim.api.nvim_win_close(win, false)
-		end)
-	end, {})
-
-	-- TODO: Delete the command below
-	vim.api.nvim_create_user_command("ToodleDebugGetFiles", function()
-		local folder = vim.fn.getcwd()
-		local entries = {}
-		get_files(folder, entries)
-
-		-- Create a temporary buffer that cannot be saved (false)
-		local buf = vim.api.nvim_create_buf(false, true)
-
-		-- Fill the buffer with debug info
-		local lines = {}
-		for _, entry in pairs(entries) do
-			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
-			table.insert(lines, entry_line)
-		end
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-
-		-- Show the buffer in a split window at the right
-		local win = vim.api.nvim_open_win(buf, true, {
-			split = "right",
-		})
-
-		-- Add bindings so that 'q' closes the toodle window
-		vim.keymap.set("n", "q", function()
-			vim.api.nvim_win_close(win, false)
-		end)
-	end, {})
-
 	-- Create a Toodle command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("Toodle", function()
 		local folder = vim.fn.getcwd()
