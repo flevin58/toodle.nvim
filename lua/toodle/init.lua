@@ -49,6 +49,30 @@ local function get_files(folder)
 end
 
 function M.setup()
+	-- Create a ToodleDebug command that opens a new window and writes the files list into it
+	vim.api.nvim_create_user_command("ToodleDebug", function()
+		local folder = vim.fn.getcwd()
+		-- local entries = map_todos_in_file(folder, filename, entries)
+
+		-- Create a temporary buffer that cannot be saved (false)
+		local buf = vim.api.nvim_create_buf(false, true)
+
+		-- Fill the buffer with debug info
+		local lines = {}
+		table.insert(lines, folder)
+		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+
+		-- Show the buffer in a split window at the right
+		local win = vim.api.nvim_open_win(buf, true, {
+			split = "right",
+		})
+
+		-- Add bindings so that 'q' closes the toodle window
+		vim.keymap.set("n", "q", function()
+			vim.api.nvim_win_close(win, false)
+		end)
+	end, {})
+
 	-- Create a Toodle command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("Toodle", function()
 		local files = get_files(vim.fn.getcwd())
