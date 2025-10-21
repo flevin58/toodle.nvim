@@ -9,7 +9,6 @@ local function map_todos_in_file(folder, file_name, entries)
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
 		local col = string.find(value, "TODO:", 1, true)
-		-- if not (col == nil) then
 		if col ~= nil then
 			table.insert(entries, {
 				file_path = full_path,
@@ -26,27 +25,21 @@ end
 -- "todo" string it adds its name, row and column to a table
 -- which is then returned to the calling function
 -- --------------------------------------------------------------
-local function get_files(folder)
-	local return_files = {}
+local function get_files(folder, entries)
 	for _, file in ipairs(vim.fn.readdir(folder)) do
 		-- Exclude hidden files/folders
-		if vim.startswith(file, ".") then
-			goto continue
-		end
-		local full_path = folder .. "/" .. file
-		if vim.fn.isdirectory(full_path) == 0 then
-			-- Here we found a file, so add the file and todo entries to the table
-			table.insert(return_files, file)
-			map_todos_in_file(folder, file, return_files)
-		else
-			-- Here we have a folder, so recursively add file entries with a todo
-			for _, f in ipairs(get_files(full_path)) do
-				table.insert(return_files, f)
+		if not vim.startswith(file, ".") then
+			local full_path = folder .. "/" .. file
+			if vim.fn.isdirectory(full_path) == 0 then
+				-- Here we found a file, so add the file and todo entries to the table
+				table.insert(entries, file)
+				map_todos_in_file(folder, file, entries)
+			else
+				-- Here we have a folder, so recursively add file entries with a todo
+				get_files(full_path, entries)
 			end
 		end
-		::continue::
 	end
-	return return_files
 end
 
 function M.setup()
@@ -80,9 +73,8 @@ function M.setup()
 
 	-- Create a Toodle command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("Toodle", function()
-		local files = get_files(vim.fn.getcwd())
-		-- fix first entry is null. TODO: Find out why and fix it!
-		table.remove(files, 1)
+		local files = {}
+		get_files(vim.fn.getcwd(), files)
 
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
