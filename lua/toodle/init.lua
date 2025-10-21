@@ -132,8 +132,8 @@ function M.setup()
 
 		-- Add bindings so that 'gg' opens the file at the TODO location
 		vim.keymap.set("n", "gg", function()
-			local row, _ = vim.api.nvim_win_get_cursor(0)
-			local selected = entries[row]
+			local pos = vim.api.nvim_win_get_cursor(0)
+			local selected = entries[pos[1]]
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim.nvim_get_current_buf(current_buf)
 			vim.api.nvim_command("edit " .. selected.file_path)
