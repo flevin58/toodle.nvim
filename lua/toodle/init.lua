@@ -15,7 +15,7 @@ local function map_todos_in_file(folder, filename, entries)
 				file_path = full_path,
 				file_name = filename,
 				row = row,
-				col = tonumber(start),
+				col = start,
 			})
 		end
 	end
