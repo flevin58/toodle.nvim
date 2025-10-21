@@ -45,6 +45,8 @@ end
 function M.setup()
 	-- Create a ToodleDebug command that opens a new window and writes the files list into it
 	vim.api.nvim_create_user_command("ToodleDebug", function()
+		-- local files = {}
+		-- get_files(vim.fn.getcwd(), files)
 		local folder = vim.fn.join({ vim.fn.getcwd(), "lua", "toodle" }, "/")
 		local entries = {}
 		map_todos_in_file(folder, "init.lua", entries)
