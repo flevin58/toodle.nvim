@@ -67,7 +67,7 @@ function M.setup()
 		})
 
 		-- Add bindings so that 'c' shows where the entry is
-		vim.keymap.set("n", "c", function()
+		vim.keymap.set("n", "<CR>", function()
 			local pos = vim.api.nvim_win_get_cursor(0)
 			local row = pos[1]
 			table.insert(lines, "Selected" .. row)
