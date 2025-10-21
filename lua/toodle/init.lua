@@ -69,7 +69,7 @@ function M.setup()
 			local pos = vim.api.nvim_win_get_cursor(0)
 			local selected = entries[pos[1]]
 			vim.api.nvim_win_close(win, false)
-			vim.api.nvim.nvim_set_current_buf(current_buf)
+			vim.api.nvim_set_current_buf(current_buf)
 			vim.api.nvim_cmd(vim.api.keyset.edit, selected.file_path)
 			-- vim.api.nvim_command("edit " .. selected.file_path)
 			-- vim.api.nvim_win_set_cursor(0, { selected.row, selecte:wind.col })
