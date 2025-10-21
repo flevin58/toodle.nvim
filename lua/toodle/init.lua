@@ -13,6 +13,7 @@ local function map_todos_in_file(folder, filename, entries)
 			table.insert(entries, {
 				file_path = full_path,
 				file_name = filename,
+				pos = pos,
 				col = pos[1],
 				row = row,
 			})
@@ -61,7 +62,7 @@ function M.setup()
 		-- Fill the buffer with debug info
 		local lines = {}
 		for _, entry in ipairs(entries) do
-			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
+			local entry_line = string.format("%s (%s)", entry.file_name, entry.pos)
 			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
