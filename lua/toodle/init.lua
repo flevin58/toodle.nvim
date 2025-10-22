@@ -8,7 +8,7 @@ local function map_todos_in_file(folder, file_name, entries)
 	local full_path = folder .. "/" .. file_name
 	local lines = vim.fn.readfile(full_path)
 	for row, value in ipairs(lines) do
-		local col = string.find(value, "TODO:", 1, true)
+		local col = string.find(value, "PAPPA", 1, true)
 		if col then
 			table.insert(entries, {
 				file_path = full_path,
@@ -73,7 +73,7 @@ function M.setup()
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim_set_current_buf(current_buf)
 			vim.api.nvim_command("edit " .. selected.file_path)
-			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col - 1 })
+			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col })
 		end, { buffer = buf })
 
 		-- Add bindings so that 'q' closes the toodle window
