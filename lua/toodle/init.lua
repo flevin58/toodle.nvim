@@ -20,6 +20,18 @@ local function map_todos_in_file(folder, file_name, entries)
 	end
 end
 
+local function save_table(table)
+	local some_file = vim.fn.getcwd() .. "/entries.txt"
+	local file = io.open(some_file, "w")
+	if file then
+		for n = 1, #table do
+			file:write(tostring(table[n]))
+			file:write("\n")
+		end
+		io.close(file)
+	end
+end
+
 -- -----------------------------------------------------------------
 -- Reads recursively the given folder and for each file having a
 -- "todo" string it adds its name, row and column to the given table
@@ -31,7 +43,7 @@ local function get_files(folder, entries)
 			local full_path = folder .. "/" .. file
 			if vim.fn.isdirectory(full_path) == 0 then
 				-- Here we found a file, so add the file and todo entries to the table
-				table.insert(entries, file)
+				-- table.insert(entries, file)
 				map_todos_in_file(folder, file, entries)
 			else
 				-- Here we have a folder, so recursively add file entries with a todo
@@ -47,6 +59,7 @@ function M.setup()
 		local folder = vim.fn.getcwd()
 		local entries = {}
 		get_files(folder, entries)
+		save_table(entries)
 
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
