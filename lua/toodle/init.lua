@@ -72,7 +72,7 @@ function M.setup()
 			vim.api.nvim_set_current_buf(current_buf)
 			-- vim.api.nvim_cmd(vim.api.keyset.edit, selected.file_path)
 			vim.api.nvim_command("edit " .. selected.file_path)
-			-- vim.api.nvim_win_set_cursor(0, { selected.row, selecte:wind.col })
+			vim.api.nvim_win_set_cursor(0, { selected.row, selected.col })
 		end, { buffer = buf })
 
 		-- Add bindings so that 'q' closes the toodle window
