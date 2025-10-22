@@ -20,18 +20,6 @@ local function map_todos_in_file(folder, file_name, entries)
 	end
 end
 
-local function save_table(table)
-	local some_file = vim.fn.getcwd() .. "/entries.txt"
-	local file = io.open(some_file, "w")
-	if file then
-		for n = 1, #table do
-			file:write(tostring(table[n]))
-			file:write("\n")
-		end
-		io.close(file)
-	end
-end
-
 -- -----------------------------------------------------------------
 -- Reads recursively the given folder and for each file having a
 -- "todo" string it adds its name, row and column to the given table
@@ -59,7 +47,6 @@ function M.setup()
 		local folder = vim.fn.getcwd()
 		local entries = {}
 		get_files(folder, entries)
-		save_table(entries)
 
 		-- Create a temporary buffer that cannot be saved (false)
 		local current_buf = vim.api.nvim_get_current_buf()
@@ -68,8 +55,10 @@ function M.setup()
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, entry in ipairs(entries) do
-			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
-			table.insert(lines, entry_line)
+			if entry then
+				local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
+				table.insert(lines, entry_line)
+			end
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 		-- Show the buffer in a split window at the right
