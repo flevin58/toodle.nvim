@@ -55,7 +55,7 @@ function M.setup()
 		-- Insert the formatted line entries into the buffer
 		local lines = {}
 		for _, entry in ipairs(entries) do
-			local entry_line = string.format("%s (%s:%s)", entry.file_name, entry.row, entry.col)
+			local entry_line = string.format("%s (%s:%s)", entry.file_path, entry.row, entry.col)
 			table.insert(lines, entry_line)
 		end
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
@@ -71,7 +71,6 @@ function M.setup()
 			vim.api.nvim_win_close(win, false)
 			vim.api.nvim_set_current_buf(current_buf)
 			-- vim.api.nvim_cmd(vim.api.keyset.edit, selected.file_path)
-			vim.inspect(selected)
 			vim.api.nvim_command("edit " .. selected.file_path)
 			-- vim.api.nvim_win_set_cursor(0, { selected.row, selecte:wind.col })
 		end, { buffer = buf })
